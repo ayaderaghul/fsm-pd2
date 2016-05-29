@@ -1,4 +1,5 @@
 #lang racket
+(require racket/hash)
 (provide (all-defined-out))
 
 (define ACTIONS# 2)
@@ -14,82 +15,45 @@
 (define (make-random-automaton states#)
   (define initial-current (random states#))
   (define to-detach (random states#))
-  (define (make-head) (make-hash (list
-                                  (cons 'INITIAL initial-current)
-                                  (cons 'CURRENT initial-current)
-                                  (cons 'PAYOFF 0))))
+  (define (make-head) (hash 'INITIAL initial-current
+                            'CURRENT initial-current
+                            'PAYOFF 0))
   (define ids (build-list states# values))
-  (define (make-body) (make-hash (map cons ids (make-states))))
+  (define (make-body) (apply hash (flatten (map list ids (make-states)))))
   (define (make-states) (build-list states# make-state))
   (define (make-state _) (state (random-action) (make-transition)))
   (define (make-transition)
-    (make-hash (list
-                (cons 'C (random states#))
-                (cons 'D (random states#)))))
-  (define body (make-hash (map cons ids (make-states))))
+    (hash 'C (random states#)
+          'D (random states#)))
   (automaton (make-head) (make-body)))
 
-(define (reset! a) ; reset
+(define (reset a) ; reset
   (match-define (automaton head body) a)
-  (hash-set! head 'CURRENT (hash-ref head 'INITIAL)))
+  (define new-head
+    (hash-set head 'CURRENT (hash-ref head 'INITIAL)))
+  (automaton new-head body))
 
 ;; CLASSIC AUTOMATA
 (define (cooperates)
-  (define head (make-hash (list
-                           (cons 'INITIAL 0)
-                           (cons 'CURRENT 0)
-                           (cons 'PAYOFF 0))))
-  (define body (make-hash (list (cons 0
-                                      (state 'C
-                                             (make-hash (list
-                                                         (cons 'C 0)
-                                                         (cons 'D 0))))))))
+  (define head (hash 'INITIAL 0 'CURRENT 0 'PAYOFF 0))
+  (define body (hash 0 (state 'C (hash 'C 0 'D 0))))
   (automaton head body))
 
 (define (defects)
-  (define head (make-hash (list
-                           (cons 'INITIAL 0)
-                           (cons 'CURRENT 0)
-                           (cons 'PAYOFF 0))))
-  (define body (make-hash (list (cons 0
-                                      (state 'D
-                                             (make-hash (list
-                                                         (cons 'C 0)
-                                                         (cons 'D 0))))))))
+  (define head (hash 'INITIAL 0 'CURRENT 0 'PAYOFF 0))
+  (define body (hash 0 (state 'D (hash 'C 0 'D 0))))
   (automaton head body))
 
 (define (tit-for-tat)
-  (define head (make-hash (list
-                           (cons 'INITIAL 0)
-                           (cons 'CURRENT 0)
-                           (cons 'PAYOFF 0))))
-  (define body (make-hash (list
-                           (cons 0
-                                 (state 'C
-                                        (make-hash (list
-                                                    (cons 'C 0)
-                                                    (cons 'D 1)))))
-                           (cons 1
-                                 (state 'D
-                                        (make-hash (list
-                                                    (cons 'C 0)
-                                                    (cons 'D 1))))))))
+  (define head (hash 'INITIAL 0 'CURRENT 0 'PAYOFF 0))
+  (define body (hash 0 (state 'C (hash 'C 0 'D 1))
+                     1 (state 'D (hash 'C 0 'D 1))))
   (automaton head body))
 
 (define (grim-trigger)
-  (define head (make-hash (list
-                           (cons 'INITIAL 0)
-                           (cons 'CURRENT 0)
-                           (cons 'PAYOFF 0))))
-  (define body (make-hash (list (cons 0
-                                      (state 'C
-                                             (make-hash (list
-                                                         (cons 'C 0)
-                                                         (cons 'D 1)))))
-                                (cons 1 (state 'D
-                                               (make-hash (list
-                                                           (cons 'C 1)
-                                                           (cons 'D 1))))))))
+  (define head (hash 'INITIAL 0 'CURRENT 0 'PAYOFF 0))
+  (define body (hash 0 (state 'C (hash 'C 0 'D 1))
+                     1 (state 'D (hash 'C 1 'D 1))))
   (automaton head body))
 
 ;; MUTATION
@@ -100,26 +64,37 @@
   (define mutate-state (random l))
   (match-define (state action dispatch) (hash-ref body mutate-state))
   (define r (random 3))
-  (cond [(zero? r) (hash-set! head 'INITIAL mutate-initial)]
-        [(= r 1)
-         (hash-set! body mutate-state
-                      (state (random-action) dispatch))]
-        [(= r 2)
-         (hash-set! dispatch (random-action) (random l))]))
+  (define new-head
+    (cond [(zero? r) (hash-set head 'INITIAL mutate-initial)]
+          [else head])) ; leave unchanged
+  (define new-body
+    (cond [(zero? r) body] ; leave unchanged
+          [(= r 1)
+           (hash-set body mutate-state
+                     (state (random-action) dispatch))]
+          [(= r 2)
+           (hash-set body mutate-state
+                     (state action
+                            (hash-set dispatch (random-action) (random l))))]))
+  (automaton new-head new-body))
+
 
 (define (add-state a)
   (match-define (automaton head body) a)
   (define l (hash-count body))
   (define (make-transition)
-    (make-hash (list
-                (cons 'C (random (+ l 1)))
-                (cons 'D (random (+ l 1))))))
+    (hash 'C (random (+ l 1))
+          'D (random (+ l 1))))
   (define (make-state) (state (random-action) (make-transition)))
-  (define r (random l))
-  (match-define (state action dispatch) (hash-ref body r))
-  (hash-set! dispatch (random-action) l)
-  (hash-set*! body l (make-state))
-  )
+  (define mutate-state (random l))
+  (match-define (state action dispatch) (hash-ref body mutate-state))
+  (define new-body
+    (hash-union
+     (hash-set body mutate-state
+              (state action
+                     (hash-set dispatch (random-action) l)))
+     (hash l (make-state))))
+  (automaton head new-body))
 
 (define (random-mem l)
   (list-ref l (random (length l))))
@@ -133,19 +108,24 @@
            (define (random-but n r)
              (random-mem (remq mutate-state (build-list n values))))
            (define mutate-state (random l))
-           (define (check-value rules index)
-             (and
-              (= mutate-state (hash-iterate-value rules index))
-              (hash-set! rules
-                         (hash-iterate-key rules index)
-                         (random-but l mutate-state))))
+           (define (check-rule rule)
+             (match-define (cons opponent-action reaction) rule)
+             (if (= mutate-state reaction)
+                 (cons opponent-action (random-but l mutate-state))
+                 rule))
+           (define (check-dispatch rules)
+             (apply hash
+                    (map check-rule (hash->list rules))))
            (define (check-state a-state)
-             (begin
-               (check-value (state-dispatch a-state) 3)
-               (check-value (state-dispatch a-state) 6)))
-           (map check-state (map cdr (hash->list body))))]))
+             (match-define (state action rules) a-state)
+             (struct-copy state a-state [dispatch (check-dispatch rules)]))
+           (define new-body
+             (for/list([i (in-range l)])
+               (list i
+                     (check-state (hash-ref body i)))))
+           (automaton head (apply hash (flatten new-body))))]))
 
-;; why hash-map dosent work
+
 
 (define (mutate a)
   (define r (random 3))
