@@ -11,7 +11,6 @@
 ; body is a hash table of states
 (struct state (action dispatch) #:transparent)
 
-
 (define (make-random-automaton states#)
   (define initial-current (random states#))
   (define to-detach (random states#))
@@ -78,7 +77,6 @@
                             (hash-set dispatch (random-action) (random l))))]))
   (automaton new-head new-body))
 
-
 (define (add-state a)
   (match-define (automaton head body) a)
   (define l (hash-count body))
@@ -98,6 +96,8 @@
 
 (define (random-mem l)
   (list-ref l (random (length l))))
+
+;; for detach and add state, use mutable would be much shorter
 
 (define (detach-state a)
   (match-define (automaton head body) a)
@@ -125,10 +125,46 @@
                      (check-state (hash-ref body i)))))
            (automaton head (apply hash (flatten new-body))))]))
 
-
-
 (define (mutate a)
   (define r (random 3))
   (cond [(zero? r) (mutate-marginally a)]
         [(= r 1) (add-state a)]
         [(= r 2) (detach-state a)]))
+
+;; INTERACTION: PAIR-MATCH
+(define PAYOFF-TABLE
+  (list
+   (list (cons 3 3) (cons 0 4))
+   (list (cons 4 0) (cons 1 1))))
+(define (payoff action1 action2)
+  (define (convert action)
+    (for/last ([i (in-range ACTIONS#)]
+      #:final (equal? action (list-ref ACTIONS i)))
+      i))
+  (list-ref (list-ref PAYOFF-TABLE (convert action1))
+            (convert action2)))
+
+(define (interact au1 au2 rounds delta)
+  (match-define (automaton head1 body1) au1)
+  (match-define (automaton head2 body2) au2)
+  (define-values (next1 next2 pay1 pay2 round-results)
+    (for/fold ([current1 (hash-ref head1 'CURRENT)]
+               [current2 (hash-ref head2 'CURRENT)]
+               [payoff1 (hash-ref head1 'PAYOFF)]
+               [payoff2 (hash-ref head2 'PAYOFF)]
+               [round-results '()])
+              ([_ (in-range rounds)])
+      (match-define (state action1 dispatch1) (hash-ref body1 current1))
+      (match-define (state action2 dispatch2) (hash-ref body2 current2))
+      (match-define (cons pay1 pay2) (payoff action1 action2))
+      (define n1 (hash-ref dispatch1 action2))
+      (define n2 (hash-ref dispatch2 action1))
+      (define round-result (list pay1 pay2))
+      (values n1 n2
+              (+ payoff1 (* (expt delta _) pay1))
+              (+ payoff2 (* (expt delta _) pay2))
+              (cons round-result round-results))))
+  (values
+   (cons pay1 pay2)
+   (reverse round-results)
+          ))
