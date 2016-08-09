@@ -55,7 +55,7 @@
                      1 (state 'D (hash 'C 1 'D 1))))
   (automaton head body))
 
-;; MUTATION
+;;IMMUTABLE MUTATION
 (define (mutate-marginally a)
   (match-define (automaton head body) a)
   (define l (hash-count body))
@@ -144,6 +144,7 @@
   (list-ref (list-ref PAYOFF-TABLE (convert action1))
             (convert action2)))
 
+;; continuation probability
 (define (interact au1 au2 rounds delta)
   (match-define (automaton head1 body1) au1)
   (match-define (automaton head2 body2) au2)
@@ -154,17 +155,98 @@
                [payoff2 (hash-ref head2 'PAYOFF)]
                [round-results '()])
               ([_ (in-range rounds)])
+      #:final (> (random) delta)
       (match-define (state action1 dispatch1) (hash-ref body1 current1))
       (match-define (state action2 dispatch2) (hash-ref body2 current2))
       (match-define (cons pay1 pay2) (payoff action1 action2))
       (define n1 (hash-ref dispatch1 action2))
       (define n2 (hash-ref dispatch2 action1))
       (define round-result (list pay1 pay2))
-      (values n1 n2
-              (+ payoff1 (* (expt delta _) pay1))
-              (+ payoff2 (* (expt delta _) pay2))
+      (values n1 n2 
+              (+ payoff1 pay1)
+              (+ payoff2 pay2)
+      ;(values n1 n2
+      ;        (+ payoff1 (* (expt delta _) pay1))
+      ;        (+ payoff2 (* (expt delta _) pay2))
               (cons round-result round-results))))
   (values
-   (cons pay1 pay2)
    (reverse round-results)
+   (automaton (hash-set head1 'PAYOFF pay1) body1)
+   (automaton (hash-set head2 'PAYOFF pay2) body2)
           ))
+
+
+#|
+;; EXPORT MATHA CODE OF THE MACHINE
+(define (generate-state-code table)
+  (define l (vector-length table))
+  (define state-numbers (vector-map state-action table))
+  (define state-labels
+    (vector-map (lambda (x)
+                  (cond ([zero? x] "C")
+                        ([= 1 x] "D")))
+                state-numbers))
+  (define state-code
+    (apply string-append
+           (add-between
+            (for/list ([i l])
+              (string-append (number->string i) " -> Placed[\"~a\", Center]"))
+            ", ")))
+  (apply format
+         (list* state-code (vector->list state-labels))))
+
+(define (scan-duplicate dispatch)
+  (match-define (vector a1 a2) dispatch)
+  (if (= a1 a2) (list "\"C,D\"" "\"C,D\"")
+      (list "\"C\"" "\"D\"")))
+
+(define (generate-dispatch-code state# dispatch)
+  (define l (vector-length dispatch))
+  (define ending (scan-duplicate dispatch))
+  (remove-duplicates
+   (for/list ([i l])
+     (string-append
+      "Labeled["
+      (number->string state#)
+      " -> "
+      (number->string (vector-ref dispatch i))
+      ", "
+      (list-ref ending i)
+      "] \n"))))
+
+(define (generate-dispatch-codes table)
+  (define dispatches (vector-map state-dispatch table))
+  (define dispatch-code
+    (for/list ([i (vector-length dispatches)])
+      (generate-dispatch-code i (vector-ref dispatches i))))
+  (apply string-append (add-between (flatten dispatch-code) ", ")))
+
+(define (generate-matha-code au name)
+  (match-define (automaton current initial payoff states) au)
+  (string-append
+   "VertexCircle[{xc_, yc_}, name_, {w_, h_}] := Disk[{xc, yc}, .1];\n"
+   name "Graph =\n"
+   "   Graph[{-1 -> " (number->string initial) " ,\n"
+   (generate-dispatch-codes states)
+   "     },\n"
+   "   EdgeShapeFunction -> \n"
+   "    GraphElementData[\"EdgeShapeFunction\", \"FilledArrow\"],\n"
+   "   VertexStyle -> LightGray,\n"
+   "   VertexShapeFunction -> VertexCircle,\n"
+   "   VertexLabels -> {" (generate-state-code states) "}\n"
+   "   ];\n"
+   "G = Graphics[{White, Disk[{0, 0}, 0.2]}];\n"
+   "Show[" name "Graph, G]\n"
+   "(*Export[\"" name ".png\",S]*)\n \n"))
+
+(define (export-matha-code au name)
+  (with-output-to-file AUTO-CODE
+    (lambda () (printf (generate-matha-code au name)))
+    #:exists 'append))
+
+(define (export-matha-codes a-list name)
+  (for ([i (length a-list)])
+    (export-matha-code (list-ref a-list i)
+                       (string-append (symbol->string name)
+                                      (number->string i)))))
+|#
