@@ -32,6 +32,7 @@
 (define (population-reset population)
   (for ([auto population] [i (in-naturals)])
     (vector-set! population i (reset auto))))
+
 (define (sum l)
   (apply + l))
 
@@ -41,10 +42,52 @@
   (for/list ([p (in-list payoffs)])
     (/ p total)))
 
+(define (accumulate-fitness probabilities)
+  (let relative->absolute ([payoffs probabilities][so-far #i0.0])
+    (cond
+     [(empty? payoffs) '()]
+     [else (define nxt (+ so-far (first payoffs)))
+           (cons nxt (relative->absolute (rest payoffs) nxt))])))
+
+(define (randomise probabilities speed)
+  (define fitness (accumulate-fitness probabilities))
+  (for/list ([n (in-range speed)])
+    [define r (random)]
+    ;; population is non-empty so there will be some i such that ...
+    (for/last ([p (in-naturals)] [% (in-list fitness)] #:final (< r %)) p)))
 
 (define (regenerate population rate)
   (define probabilities (payoff->fitness population))
-  [define substitutes (choose-randomly probabilities rate)]
+  [define substitutes (randomise probabilities rate)]
   (for ([i (in-range rate)]
         [auto (in-list substitutes)])
-    (vector-set! population i (clone
+    (vector-set! population i (reset (vector-ref population auto))))
+  (shuffle-vector population))
+
+;; MUTATE
+(define (mutate-population population rate)
+  (for ([i (in-range rate)])
+    (vector-set! population i (mutate (vector-ref population i)))))
+
+;; SHUFFLE VECTOR
+
+(define (shuffle-vector vec)
+  (define lst (vector->list vec))
+  (define l2 (shuffle lst))
+  (list->vector l2))
+
+
+(define (average lst)
+  (/ (sum lst)
+     (length lst)))
+
+
+(define (evolve population cycles speed rounds delta mutation)
+  (cond
+   [(zero? cycles) '()]
+   [else (define p2 (match-population population rounds delta))
+         (define pp (population-payoffs p2))
+         (define p3 (regenerate p2 speed))
+         (define p4 (mutate-population p3 mutation))
+         (cons (average pp)
+               (evolve p3 (- cycles 1) speed rounds delta mutation))]))
