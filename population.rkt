@@ -5,7 +5,7 @@
 (require "automata.rkt")
 
 ;; CONFIGURATION
-(define MAX-STATES# 3) ; create an automaton having up to 15 states
+(define MAX-STATES# 1) ; create an automaton having up to 15 states
 ;; even start with 1
 
 ;; POPULATION
@@ -49,12 +49,13 @@
      [else (define nxt (+ so-far (first payoffs)))
            (cons nxt (relative->absolute (rest payoffs) nxt))])))
 
-(define (randomise probabilities speed)
+(define (randomise probabilities speed #:random (q #false))
   (define fitness (accumulate-fitness probabilities))
   (for/list ([n (in-range speed)])
-    [define r (random)]
+    [define r (or q (random))]
     ;; population is non-empty so there will be some i such that ...
     (for/last ([p (in-naturals)] [% (in-list fitness)] #:final (< r %)) p)))
+
 
 (define (regenerate population rate)
   (define probabilities (payoff->fitness population))
@@ -78,8 +79,9 @@
 
 
 (define (average lst)
-  (/ (sum lst)
-     (length lst)))
+  (exact->inexact 
+   (/ (sum lst)
+     (length lst))))
 
 
 (define (evolve population cycles speed rounds delta mutation)
@@ -91,3 +93,26 @@
          (define p4 (mutate-population p3 mutation))
          (cons (average pp)
                (evolve p3 (- cycles 1) speed rounds delta mutation))]))
+
+(require plot)
+(define (population-mean->lines data)
+  (define coors (for/list ([d (in-list data)][n (in-naturals)]) (list n d)))
+  (lines coors))
+
+(define (plot-mean data)
+(plot (list (population-mean->lines data)) #:out-file "trial.png"))
+
+(define (main)
+(collect-garbage)
+(define A (build-random-population 100))
+(define data (time (evolve A 800 10 100 .9 0)))
+(plot-mean data))
+
+(module+ five
+  (main)
+  (main)
+  (main)
+  (main)
+  (main))
+
+

@@ -28,8 +28,10 @@
 
 (define (reset a) ; reset
   (match-define (automaton head body) a)
-  (define new-head
+  (define new-head*
     (hash-set head 'CURRENT (hash-ref head 'INITIAL)))
+  (define new-head
+    (hash-set new-head* 'PAYOFF 0))
   (automaton new-head body))
 
 ;; CLASSIC AUTOMATA
@@ -162,9 +164,9 @@
       (define n1 (hash-ref dispatch1 action2))
       (define n2 (hash-ref dispatch2 action1))
       (define round-result (list pay1 pay2))
-      (values n1 n2 
-              (+ payoff1 pay1)
-              (+ payoff2 pay2)
+      (values n1 n2
+              (+ payoff1 (* pay1 (- 1 delta)))
+              (+ payoff2 (* pay2 (- 1 delta)))
       ;(values n1 n2
       ;        (+ payoff1 (* (expt delta _) pay1))
       ;        (+ payoff2 (* (expt delta _) pay2))
@@ -174,5 +176,3 @@
    (automaton (hash-set head1 'PAYOFF pay1) body1)
    (automaton (hash-set head2 'PAYOFF pay2) body2)
           ))
-
-

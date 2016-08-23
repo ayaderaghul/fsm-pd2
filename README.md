@@ -35,7 +35,14 @@ automata.rkt
 | To do         | Date          | By    | Done? | Note|
 | ------------- |:-------------:| ----- |:-----:|-----|
 | redo the population      | 22 aug 16 | chi | ||
-| how to test the function, like mutate  | ||||
+| evolve doesnt work: hash-ref value not found: interaction  | |||blame: mutation|
 | use graphviz instead of matha code  | |||||
+| reset: both current and payoff  | 23 aug|||x||
+|   | |||||
+|   | |||||
+|   | |||||
+|   | |||||
+|   | |||||
+
 
 
