@@ -35,10 +35,10 @@ automata.rkt
 | To do         | Date          | By    | Done? | Note|
 | ------------- |:-------------:| ----- |:-----:|-----|
 | redo the population      | 22 aug 16 | chi | ||
-| evolve doesnt work: hash-ref value not found: interaction  | |||blame: mutation|
-| export to graphviz dot instead of matha code  | ||||working...|
+| evolve doesnt work: hash-ref value not found: interaction  | |||blame: mutation, because the exception is thrown at arbitrary settings|
+| export to graphviz dot instead of matha code  | 24 |||x||
 | reset: both current and payoff  | 23 aug|||x||
-|   | |||||
+| visualise the mutation process on TV  | |||||
 |   | |||||
 |   | |||||
 |   | |||||

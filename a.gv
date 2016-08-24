@@ -9,10 +9,9 @@ digraph finite_state_machine {
 1 [label="D"];
         0 -> 1 [ label = "D" ]
         0 -> 0 [ label = "C" ]
-        1 -> 0 [ label = "C" ]
-        1 -> 1 [ label = "D" ]
-// title
+        1 -> 1 [ label = "C,D" ]
+        // title
     labelloc="b";
-    label="Tit for Tat";
+    label="Grim Trigger";
         
 }

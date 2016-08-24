@@ -179,23 +179,6 @@
 
 ;; EXPORT TO GRAPHVIZ
 
-(define (generate-state-code table)
-  (define l (vector-length table))
-  (define state-numbers (vector-map state-action table))
-  (define state-labels
-    (vector-map (lambda (x)
-                  (cond ([zero? x] "C")
-                        ([= 1 x] "D")))
-                state-numbers))
-  (define state-code
-    (apply string-append
-           (add-between
-            (for/list ([i l])
-              (string-append (number->string i) " -> Placed[\"~a\", Center]"))
-            ", ")))
-  (apply format
-         (list* state-code (vector->list state-labels))))
-
 (define (scan-duplicate dispatch)
   (define destinations (hash-values dispatch))
   (if (apply equal? destinations)
@@ -210,43 +193,55 @@
      (string-append
       (number->string state#)
       " -> "
-      (number->string (vector-ref dispatch i))
-      ", "
-      (list-ref ending i)
-      "] \n"))))
+      (number->string (hash-iterate-value dispatch i))
+      " [ label = "
+      (list-ref ends i)
+      " ] \n"))))
 
-(define (generate-dispatch-codes table)
-  (define dispatches (vector-map state-dispatch table))
+(define (generate-dispatch-codes body)
+  (define dispatches (map state-dispatch (hash-values body)))
   (define dispatch-code
-    (for/list ([i (vector-length dispatches)])
-      (generate-dispatch-code i (vector-ref dispatches i))))
-  (apply string-append (add-between (flatten dispatch-code) ", ")))
+    (for/list ([i (length dispatches)])
+      (generate-dispatch-code i (list-ref dispatches i))))
+  (apply string-append (flatten dispatch-code)))
 
-(define (generate-matha-code au name)
-  (match-define (automaton current initial payoff states) au)
+(define (generate-state-code body)
+  (define l (hash-count body))
+  (define label-code
+    (for/list ([i l])
+      (string-append
+       (number->string i)
+       " [label = \""
+       (symbol->string (state-action (hash-ref body i)))
+       "\"] \n")))
+  (apply string-append (flatten label-code)))
+
+(define (generate-dot-code au name)
+  (match-define (automaton head body) au)
   (string-append
-   "VertexCircle[{xc_, yc_}, name_, {w_, h_}] := Disk[{xc, yc}, .1];\n"
-   name "Graph =\n"
-   "   Graph[{-1 -> " (number->string initial) " ,\n"
-   (generate-dispatch-codes states)
-   "     },\n"
-   "   EdgeShapeFunction -> \n"
-   "    GraphElementData[\"EdgeShapeFunction\", \"FilledArrow\"],\n"
-   "   VertexStyle -> LightGray,\n"
-   "   VertexShapeFunction -> VertexCircle,\n"
-   "   VertexLabels -> {" (generate-state-code states) "}\n"
-   "   ];\n"
-   "G = Graphics[{White, Disk[{0, 0}, 0.2]}];\n"
-   "Show[" name "Graph, G]\n"
-   "(*Export[\"" name ".png\",S]*)\n \n"))
+   "digraph finite_state_machine {
+            rankdir=LR
+            size=\"8,5\"
+            node [shape = doublecircle]; "
+   (number->string (hash-ref head 'INITIAL))
+   "
+            node [shape = circle] \n \n"
+   (generate-state-code body)
+   "\n"
+   (generate-dispatch-codes body)
+   "
+    labelloc=\"b\"
+    label = \"" name  "\"
+    }"))
 
-(define (export-matha-code au name)
-  (with-output-to-file AUTO-CODE
-    (lambda () (printf (generate-matha-code au name)))
-    #:exists 'append))
+(define (export-dot-code au au-name)
+  (with-output-to-file (string-append au-name ".gv")
+    (lambda () (printf (generate-dot-code au au-name)))
+    #:exists 'replace))
 
-(define (export-matha-codes a-list name)
+(define (export-dot-codes a-list name)
   (for ([i (length a-list)])
-    (export-matha-code (list-ref a-list i)
-                       (string-append (symbol->string name)
-                                      (number->string i)))))
+    (export-dot-code (list-ref a-list i)
+                     (string-append (symbol->string name)
+                                    (number->string i))
+                     )))

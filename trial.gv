@@ -1,0 +1,39 @@
+digraph finite_state_machine {
+            rankdir=LR
+            size="8,5"
+            node [shape = doublecircle]; 5
+            node [shape = circle] 
+ 
+0 [label = "C"] 
+1 [label = "D"] 
+2 [label = "C"] 
+3 [label = "D"] 
+4 [label = "D"] 
+5 [label = "D"] 
+6 [label = "C"] 
+7 [label = "D"] 
+8 [label = "C"] 
+9 [label = "C"] 
+
+0 -> 5 [ label = "C" ] 
+0 -> 0 [ label = "D" ] 
+1 -> 5 [ label = "C,D" ] 
+2 -> 2 [ label = "C" ] 
+2 -> 4 [ label = "D" ] 
+3 -> 7 [ label = "C" ] 
+3 -> 6 [ label = "D" ] 
+4 -> 9 [ label = "C" ] 
+4 -> 0 [ label = "D" ] 
+5 -> 1 [ label = "C,D" ] 
+6 -> 3 [ label = "C" ] 
+6 -> 9 [ label = "D" ] 
+7 -> 5 [ label = "C" ] 
+7 -> 1 [ label = "D" ] 
+8 -> 4 [ label = "C" ] 
+8 -> 8 [ label = "D" ] 
+9 -> 9 [ label = "C" ] 
+9 -> 6 [ label = "D" ] 
+
+    labelloc="b"
+    label = "random"
+    }
