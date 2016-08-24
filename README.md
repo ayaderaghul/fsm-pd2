@@ -36,7 +36,7 @@ automata.rkt
 | ------------- |:-------------:| ----- |:-----:|-----|
 | redo the population      | 22 aug 16 | chi | ||
 | evolve doesnt work: hash-ref value not found: interaction  | |||blame: mutation|
-| use graphviz instead of matha code  | |||||
+| export to graphviz dot instead of matha code  | ||||working...|
 | reset: both current and payoff  | 23 aug|||x||
 |   | |||||
 |   | |||||
