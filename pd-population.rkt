@@ -2,7 +2,7 @@
 
 (provide (all-defined-out))
 
-(require "automata.rkt")
+(require "pd-automata.rkt")
 
 ;; CONFIGURATION
 (define MAX-STATES# 1) ; create an automaton having up to 15 states
@@ -91,7 +91,8 @@
          (define pp (population-payoffs p2))
          (define p3 (regenerate p2 speed))
          (define p4 (mutate-population p3 mutation))
-         (cons (average pp)
+         (cons ;(average pp)
+p3
                (evolve p3 (- cycles 1) speed rounds delta mutation))]))
 
 (require plot)
@@ -100,12 +101,13 @@
   (lines coors))
 
 (define (plot-mean data)
-(plot (list (population-mean->lines data)) #:out-file "trial.png"))
+(plot (list (population-mean->lines data)) #:out-file "trial.png"
+ #:y-max 5 #:y-min 0))
 
 (define (main)
 (collect-garbage)
 (define A (build-random-population 100))
-(define data (time (evolve A 800 10 100 .9 0)))
+(define data (time (evolve A 800 10 100 .9 1)))
 (plot-mean data))
 
 (module+ five

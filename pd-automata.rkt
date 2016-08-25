@@ -133,6 +133,10 @@
         [(= r 1) (add-state a)]
         [(= r 2) (detach-state a)]))
 
+(define (mutates au n)
+  (cond [(zero? n) '()]
+        [else (cons (mutate au) (mutates au (- n 1)))]))
+
 ;; INTERACTION: PAIR-MATCH
 (define PAYOFF-TABLE
   (list
@@ -235,9 +239,9 @@
     }"))
 
 (define (export-dot-code au au-name)
-  (with-output-to-file (string-append au-name ".gv")
+  (with-output-to-file "au.gv"
     (lambda () (printf (generate-dot-code au au-name)))
-    #:exists 'replace))
+    #:exists 'append))
 
 (define (export-dot-codes a-list name)
   (for ([i (length a-list)])
