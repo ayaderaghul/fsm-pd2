@@ -2,7 +2,7 @@
 
 (provide (all-defined-out))
 
-(require "pd-automata.rkt")
+(require "pd-automata.rkt" "inout.rkt")
 
 ;; CONFIGURATION
 (define MAX-STATES# 1) ; create an automaton having up to 15 states
@@ -24,9 +24,11 @@
     (define auto1 (vector-ref population i))
     (define auto2 (vector-ref population (+ i 1)))
     (define-values (round-results a1 a2)
-      (interact auto1 auto2 rounds delta))
+      (interact* auto1 auto2 rounds delta))
     (vector-set! population i a1)
-    (vector-set! population (+ i 1) a2))
+    (vector-set! population (+ i 1) a2)
+(out-data "data" (list (list round-results a1 a2)))
+)
   population)
 
 (define (population-reset population)
@@ -87,12 +89,13 @@
 (define (evolve population cycles speed rounds delta mutation)
   (cond
    [(zero? cycles) '()]
-   [else (define p2 (match-population population rounds delta))
+   [else (out-data "data" (list (list cycles)))
+         (define p2 (match-population population rounds delta))
          (define pp (population-payoffs p2))
          (define p3 (regenerate p2 speed))
          (define p4 (mutate-population p3 mutation))
-         (cons ;(average pp)
-p3
+         (cons (average pp)
+               ;p3
                (evolve p3 (- cycles 1) speed rounds delta mutation))]))
 
 (require plot)

@@ -28,21 +28,42 @@ automata.rkt
 * interaction (with delta as continual probability)
 * immutable mutation (hash)
 
+2. holy f*** s***, at 31 aug i fix the bug #2
 
+error:
+
+   hash-ref: no 'D key
+   blame: interact...
+
+i have to output population at each cycle in the `evolve
+
+then print "I-AM-HERE!!!!!" everytime it throws exception
+
+then print output of `interact, with handlers, so if it throws exception, it still returns the automaton pair
+
+i discover that the cause is that somehow the states in the troublesome automaton gets an extra pair of parentheses (OMG)
+
+i guess it is due to `mutate
+
+then print output of `mutate with its ID
+
+then i discover that it is the `detach state that adds the extra pair
+
+because hash->list and list->hash i have to add `flatten 
 
 ## to-very-dos
 
-| To do         | Date          | By    | Done? | Note|
-| ------------- |:-------------:| ----- |:-----:|-----|
-| redo the population      | 22 aug 16 | chi | ||
-| evolve doesnt work: hash-ref value not found: interaction  | |||blame: mutation, because the exception is thrown at arbitrary settings|
-| export to graphviz dot instead of matha code  | 24 |||x||
-| reset: both current and payoff  | 23 aug|||x||
-| visualise the mutation process on TV  | |||||
-|   | |||||
-|   | |||||
-|   | |||||
-|   | |||||
+|ID| To do         | Date          | By    | Done? | Note|
+|--| ------------- |:-------------:| ----- |:-----:|-----|
+|#1| redo the population      | 22 aug 16 | chi | ||
+|#2| evolve doesnt work: hash-ref value not found: interaction  |31 ||x|blame: mutation, because the exception is thrown at arbitrary settings|
+|#3| export to graphviz dot instead of matha code  | 24 |||x||
+|#4| reset: both current and payoff  | 23 aug|||x||
+|#5| visualise the mutation process on TV  | ||||ugh later..|
+||   | |||||
+||   | |||||
+||   | |||||
+||   | |||||
 
 
 

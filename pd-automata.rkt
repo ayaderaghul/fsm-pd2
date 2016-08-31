@@ -1,5 +1,5 @@
 #lang racket
-(require racket/hash)
+(require racket/hash "inout.rkt")
 (provide (all-defined-out))
 
 (define ACTIONS# 2)
@@ -117,7 +117,8 @@
                  rule))
            (define (check-dispatch rules)
              (apply hash
-                    (map check-rule (hash->list rules))))
+                    (flatten
+                     (map check-rule (hash->list rules)))))
            (define (check-state a-state)
              (match-define (state action rules) a-state)
              (struct-copy state a-state [dispatch (check-dispatch rules)]))
@@ -129,13 +130,17 @@
 
 (define (mutate a)
   (define r (random 3))
-  (cond [(zero? r) (mutate-marginally a)]
-        [(= r 1) (add-state a)]
-        [(= r 2) (detach-state a)]))
+  (cond [(zero? r) (out-data "data" (list (list 0))) (mutate-marginally a)]
+        [(= r 1) (out-data "data" (list (list 1))) (add-state a)]
+        [(= r 2) (out-data "data" (list (list 2))) (detach-state a)]))
 
 (define (mutates au n)
   (cond [(zero? n) '()]
-        [else (cons (mutate au) (mutates au (- n 1)))]))
+        [else
+         (out-data "data" (list (list n)))
+         (out-data "data" (list (list au)))
+         (define new (mutate au))
+         (cons au (mutates new (- n 1)))]))
 
 ;; INTERACTION: PAIR-MATCH
 (define PAYOFF-TABLE
@@ -177,9 +182,17 @@
               (cons round-result round-results))))
   (values
    (reverse round-results)
-   (automaton (hash-set head1 'PAYOFF pay1) body1)
-   (automaton (hash-set head2 'PAYOFF pay2) body2)
+   (automaton (hash-set head1 'PAYOFF (round2 pay1)) body1)
+   (automaton (hash-set head2 'PAYOFF (round2 pay2)) body2)
           ))
+
+(define (interact* au1 au2 rounds delta)
+  (with-handlers ([exn:fail?
+                   (lambda (e) (values (list 'I-AM-HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!) au1 au2))])
+    (interact au1 au2 rounds delta)))
+(define (round2 n)
+  (/ (round (* 100 n))
+     100))
 
 ;; EXPORT TO GRAPHVIZ
 
