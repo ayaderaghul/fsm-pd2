@@ -55,11 +55,13 @@ because hash->list and list->hash i have to add `flatten
 ## to-very-dos
 
 | To do         | Date          | By    | Done? | Note|
-| ------------- |:-------------:| ----- |:-----:|-----|
+|-------------- |:-------------:| ----- |:-----:|-----|
 
 
 | ID | To do         | Date          | By    | Done? | Note|
 | -- | ------------- |:-------------:| ----- |:-----:|-----|
+
+
 | 1 | redo the population    | 22 aug | chi | ||
 | 2 | evolve doesnt work: hash-ref value not found: interaction  |31 ||x|blame: mutation, because the exception is thrown at arbitrary settings|
 | 3 | export to graphviz dot instead of matha code  | 24 ||x|with-output-to-dot|
