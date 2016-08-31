@@ -26,9 +26,7 @@
     (define-values (round-results a1 a2)
       (interact* auto1 auto2 rounds delta))
     (vector-set! population i a1)
-    (vector-set! population (+ i 1) a2)
-(out-data "data" (list (list round-results a1 a2)))
-)
+    (vector-set! population (+ i 1) a2))
   population)
 
 (define (population-reset population)
@@ -89,7 +87,7 @@
 (define (evolve population cycles speed rounds delta mutation)
   (cond
    [(zero? cycles) '()]
-   [else (out-data "data" (list (list cycles)))
+   [else 
          (define p2 (match-population population rounds delta))
          (define pp (population-payoffs p2))
          (define p3 (regenerate p2 speed))

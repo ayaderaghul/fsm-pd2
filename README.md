@@ -28,12 +28,13 @@ automata.rkt
 * interaction (with delta as continual probability)
 * immutable mutation (hash)
 
-2. holy f*** s***, at 31 aug i fix the bug #2
+
+2. holy god, at 31 aug i fix the bug #2
 
 error:
 
-   hash-ref: no 'D key
-   blame: interact...
+    hash-ref: no 'D key
+    blame: interact...
 
 i have to output population at each cycle in the `evolve
 
@@ -49,7 +50,7 @@ then print output of `mutate with its ID
 
 then i discover that it is the `detach state that adds the extra pair
 
-because hash->list and list->hash i have to add `flatten 
+because hash->list and list->hash i have to add `flatten
 
 ## to-very-dos
 
@@ -57,13 +58,13 @@ because hash->list and list->hash i have to add `flatten
 |--| ------------- |:-------------:| ----- |:-----:|-----|
 |#1| redo the population      | 22 aug 16 | chi | ||
 |#2| evolve doesnt work: hash-ref value not found: interaction  |31 ||x|blame: mutation, because the exception is thrown at arbitrary settings|
-|#3| export to graphviz dot instead of matha code  | 24 |||x||
-|#4| reset: both current and payoff  | 23 aug|||x||
-|#5| visualise the mutation process on TV  | ||||ugh later..|
-||   | |||||
-||   | |||||
-||   | |||||
-||   | |||||
+|#3| export to graphviz dot instead of matha code  | 24 ||x|with-output-to-dot|
+|#4| reset: both current and payoff  | 23 aug||x||
+|#5| visualise the mutation process on TV  | |||ugh later..|
+||   | ||||
+||   | ||||
+||   | ||||
+||   | |||| |
 
 
 

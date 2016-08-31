@@ -1,5 +1,5 @@
 #lang racket
-(require racket/hash "inout.rkt")
+(require racket/hash)
 (provide (all-defined-out))
 
 (define ACTIONS# 2)
@@ -130,15 +130,13 @@
 
 (define (mutate a)
   (define r (random 3))
-  (cond [(zero? r) (out-data "data" (list (list 0))) (mutate-marginally a)]
-        [(= r 1) (out-data "data" (list (list 1))) (add-state a)]
-        [(= r 2) (out-data "data" (list (list 2))) (detach-state a)]))
+  (cond [(zero? r) (mutate-marginally a)]
+        [(= r 1) (add-state a)]
+        [(= r 2) (detach-state a)]))
 
 (define (mutates au n)
   (cond [(zero? n) '()]
         [else
-         (out-data "data" (list (list n)))
-         (out-data "data" (list (list au)))
          (define new (mutate au))
          (cons au (mutates new (- n 1)))]))
 
