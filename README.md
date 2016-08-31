@@ -56,15 +56,10 @@ because hash->list and list->hash i have to add `flatten
 
 | ID | To do         | Date          | By    | Done? | Note|
 | -- | ------------- |:-------------:| ----- |:-----:|-----|
-| #1 | redo the population    | 22 aug 16 | chi | ||
-| #2 | evolve doesnt work: hash-ref value not found: interaction  |31 ||x|blame: mutation, because the exception is thrown at arbitrary settings|
-| #3 | export to graphviz dot instead of matha code  | 24 ||x|with-output-to-dot|
-| #4 | reset: both current and payoff  | 23 aug||x||
-| #5 | visualise the mutation process on TV  | |||ugh later..|
-||   | ||||
-||   | ||||
-||   | ||||
-||   | |||| 
-
+| 1 | redo the population    | 22 aug | chi | ||
+| 2 | evolve doesnt work: hash-ref value not found: interaction  |31 ||x|blame: mutation, because the exception is thrown at arbitrary settings|
+| 3 | export to graphviz dot instead of matha code  | 24 ||x|with-output-to-dot|
+| 4 | reset: both current and payoff  | 23 ||x||
+| 5 | visualise the mutation process on TV  | |||ugh later..|
 
 
