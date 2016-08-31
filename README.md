@@ -54,6 +54,10 @@ because hash->list and list->hash i have to add `flatten
 
 ## to-very-dos
 
+| To do         | Date          | By    | Done? | Note|
+| ------------- |:-------------:| ----- |:-----:|-----|
+
+
 | ID | To do         | Date          | By    | Done? | Note|
 | -- | ------------- |:-------------:| ----- |:-----:|-----|
 | 1 | redo the population    | 22 aug | chi | ||
