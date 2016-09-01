@@ -2,7 +2,7 @@
 
 (provide (all-defined-out))
 
-(require "pd-automata.rkt" "inout.rkt")
+(require "pd-automata.rkt")
 
 ;; CONFIGURATION
 (define MAX-STATES# 1) ; create an automaton having up to 15 states
@@ -79,7 +79,7 @@
 
 
 (define (average lst)
-  (exact->inexact 
+  (exact->inexact
    (/ (sum lst)
      (length lst))))
 
@@ -87,7 +87,7 @@
 (define (evolve population cycles speed rounds delta mutation)
   (cond
    [(zero? cycles) '()]
-   [else 
+   [else
          (define p2 (match-population population rounds delta))
          (define pp (population-payoffs p2))
          (define p3 (regenerate p2 speed))
@@ -108,7 +108,7 @@
 (define (main)
 (collect-garbage)
 (define A (build-random-population 100))
-(define data (time (evolve A 800 10 100 .9 1)))
+(define data (time (evolve A 5000 10 400 .95 1)))
 (plot-mean data))
 
 (module+ five
@@ -117,5 +117,3 @@
   (main)
   (main)
   (main))
-
-

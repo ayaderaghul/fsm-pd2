@@ -61,5 +61,7 @@ because hash->list and list->hash i have to add `flatten
 | 3 | export to graphviz dot instead of matha code  | 24 ||x|with-output-to-dot|
 | 4 | reset: both current and payoff  | 23 ||x||
 | 5 | visualise the mutation process on TV  | |||ugh later..|
+| 6 | why it doesnt show cooperative period |1 sep ||x|try to test the rd first, wo mutation: fail. blame: `scan right, but forget to reset payoff before scan|
+| 7 | replicator dynamics test looks squiggly ugly | ||| blame: continual probability method|
 
 
