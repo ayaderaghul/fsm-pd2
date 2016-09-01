@@ -63,5 +63,6 @@ because hash->list and list->hash i have to add `flatten
 | 5 | visualise the mutation process on TV  | |||ugh later..|
 | 6 | why it doesnt show cooperative period |1 sep ||x|try to test the rd first, wo mutation: fail. blame: `scan right, but forget to reset payoff before scan|
 | 7 | replicator dynamics test looks squiggly ugly | ||| blame: continual probability method|
+| 8 | from #6, if rd test passed, why it doesnt show cooperative period? ||||STILL DOESNT SHOW COOPERATIVE PERIOD??? WTF|
 
 

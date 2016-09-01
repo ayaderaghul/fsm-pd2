@@ -2,7 +2,7 @@
 
 (provide (all-defined-out))
 
-(require "pd-automata.rkt")
+(require "pd-automata.rkt" plot)
 
 ;; CONFIGURATION
 (define MAX-STATES# 1) ; create an automaton having up to 15 states
@@ -96,20 +96,24 @@
                ;p3
                (evolve p3 (- cycles 1) speed rounds delta mutation))]))
 
-(require plot)
 (define (population-mean->lines data)
   (define coors (for/list ([d (in-list data)][n (in-naturals)]) (list n d)))
   (lines coors))
 
-(define (plot-mean data)
-(plot (list (population-mean->lines data)) #:out-file "trial.png"
- #:y-max 5 #:y-min 0))
+(define (plot-mean data delta)
+(define max-pay (* 5 (compound delta ROUNDS)))
+(define cap (function (lambda (x) max-pay) #:color "blue"))
+(plot (list cap (population-mean->lines data)) #:out-file "trial.png"
+ #:y-max (+ max-pay 5) #:y-min 0))
 
+;; to calculate the compound rate of payoff
+(define (compound d r) (foldl (lambda (n a) (+ a (expt d n))) 1 (build-list (- r 1) add1)))
+(define ROUNDS 400)
 (define (main)
 (collect-garbage)
 (define A (build-random-population 100))
 (define data (time (evolve A 5000 10 400 .95 1)))
-(plot-mean data))
+(plot-mean data .95))
 
 (module+ five
   (main)

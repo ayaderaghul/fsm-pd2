@@ -184,10 +184,37 @@
    (automaton (hash-set head2 'PAYOFF (round2 pay2)) body2)
           ))
 
+(define (interact-d au1 au2 rounds delta)
+  (match-define (automaton head1 body1) au1)
+  (match-define (automaton head2 body2) au2)
+  (define-values (next1 next2 pay1 pay2 round-results)
+    (for/fold ([current1 (hash-ref head1 'CURRENT)]
+               [current2 (hash-ref head2 'CURRENT)]
+               [payoff1 (hash-ref head1 'PAYOFF)]
+               [payoff2 (hash-ref head2 'PAYOFF)]
+               [round-results '()])
+              ([_ (in-range rounds)])
+      (match-define (state action1 dispatch1) (hash-ref body1 current1))
+      (match-define (state action2 dispatch2) (hash-ref body2 current2))
+      (match-define (cons pay1 pay2) (payoff action1 action2))
+      (define n1 (hash-ref dispatch1 action2))
+      (define n2 (hash-ref dispatch2 action1))
+      (define round-result (list pay1 pay2))
+      (values n1 n2
+              (+ payoff1 (* (expt delta _) pay1))
+              (+ payoff2 (* (expt delta _) pay2))
+              (cons round-result round-results))))
+  (values
+   (reverse round-results)
+   (automaton (hash-set head1 'PAYOFF (round2 pay1)) body1)
+   (automaton (hash-set head2 'PAYOFF (round2 pay2)) body2)
+          ))
+
 (define (interact* au1 au2 rounds delta)
   (with-handlers ([exn:fail?
-                   (lambda (e) (values (list 'I-AM-HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!) au1 au2))])
-    (interact au1 au2 rounds delta)))
+                   (lambda (e) (values (list 'I-AM-HERE!!!) au1 au2))])
+    (interact-d au1 au2 rounds delta)))
+
 (define (round2 n)
   (/ (round (* 100 n))
      100))
