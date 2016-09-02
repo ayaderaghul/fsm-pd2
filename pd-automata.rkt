@@ -174,9 +174,8 @@
       (values n1 n2
               (+ payoff1 (* pay1 (- 1 delta)))
               (+ payoff2 (* pay2 (- 1 delta)))
-      ;(values n1 n2
-      ;        (+ payoff1 (* (expt delta _) pay1))
-      ;        (+ payoff2 (* (expt delta _) pay2))
+               ;(+ payoff1 pay1)
+               ;(+ payoff2 pay2)
               (cons round-result round-results))))
   (values
    (reverse round-results)

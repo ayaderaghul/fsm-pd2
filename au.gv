@@ -1,0 +1,41 @@
+digraph finite_state_machine {
+            rankdir=LR
+            size="8,5"
+            node [shape = doublecircle]; 0
+            node [shape = circle] 
+ 
+0 [label = "C"] 
+
+0 -> 0 [ label = "C,D" ] 
+
+    labelloc="b"
+    label = "cooperates"
+    }digraph finite_state_machine {
+            rankdir=LR
+            size="8,5"
+            node [shape = doublecircle]; 0
+            node [shape = circle] 
+ 
+0 [label = "D"] 
+
+0 -> 0 [ label = "C,D" ] 
+
+    labelloc="b"
+    label = "defects"
+    }digraph finite_state_machine {
+            rankdir=LR
+            size="8,5"
+            node [shape = doublecircle]; 0
+            node [shape = circle] 
+ 
+0 [label = "C"] 
+1 [label = "D"] 
+
+0 -> 1 [ label = "C" ] 
+0 -> 0 [ label = "D" ] 
+1 -> 1 [ label = "C" ] 
+1 -> 0 [ label = "D" ] 
+
+    labelloc="b"
+    label = "tit-for-tat"
+    }

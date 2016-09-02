@@ -56,7 +56,7 @@ because hash->list and list->hash i have to add `flatten
 
 | ID| To do          | Done?|Date    | by | Note |
 |:-:|-------------|:-----:|:-----:|:-----:|----|
-| 1 | redo the population    | | | chi | |
+| 1 | redo the population    | x| 0309| chi |works ..ok (shows the cooperative periods) |
 | 2 | evolve doesnt work: hash-ref value not found: interaction |x |3108 ||blame: mutation, because the exception is thrown at arbitrary settings|
 | 3 | export to graphviz dot instead of matha code |x | 24 ||with-output-to-dot|
 | 4 | reset: both current and payoff  |x| 23 |||
@@ -64,7 +64,7 @@ because hash->list and list->hash i have to add `flatten
 | 6 | why it doesnt show cooperative period |x|0109 ||try to test the rd first, wo mutation: fail. blame: `scan right, but forget to reset payoff before scan|
 | 7 | replicator dynamics test looks squiggly ugly | ||| blame: continual probability method. change to discount method, still ugly |
 | 8 | from #6, if rd test passed, why it doesnt show cooperative period? |x|2||STILL DOESNT SHOW COOPERATIVE PERIOD??? WTF. finally it shows, but with very high mutation rate|
-|9||||||
+|9|the characteristic test|||||
 |10||||||
 |11||||||
 |12||||||

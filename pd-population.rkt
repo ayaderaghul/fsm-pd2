@@ -103,19 +103,20 @@
 
 (define (plot-mean data delta)
 ;(define max-pay (* 5 (compound delta ROUNDS)))
-(define max-pay 5)
-(define cap (function (lambda (x) max-pay) #:color "blue"))
-(plot (list cap (population-mean->lines data)) #:out-file "trial.png"
- #:y-max (+ max-pay 5) #:y-min 0))
+(define max-pay 3)
+;(define cap (function (lambda (x) max-pay) #:color "blue"))
+(plot (list ;cap 
+(population-mean->lines data)) #:x-label "cycles" #:y-label "population mean" #:out-file "trial.png"
+ #:y-max 5 #:y-min 0 #:width 1200 #:height 800))
 
 ;; to calculate the compound rate of payoff
 (define (compound d r) (foldl (lambda (n a) (+ a (expt d n))) 1 (build-list (- r 1) add1)))
 (define ROUNDS 100)
 (define (main)
-(collect-garbage)
-(define A (build-random-population 100))
-(define data (time (evolve A 5000 10 100 .95 10)))
-(plot-mean data .95))
+ (collect-garbage)
+ (define A (build-random-population 100))
+ (define data (time (evolve A 5000 10 400 .95 7)))
+ (plot-mean data .95))
 
 (module+ five
   (main)
