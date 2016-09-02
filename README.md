@@ -54,15 +54,20 @@ because hash->list and list->hash i have to add `flatten
 
 ## to-very-dos
 
-| ID         | To do          | Date    | by | Done?| Note |
-|-------------- |-------------| :-----:|:-----:|:-----:|----|
-| 1 | redo the population    | 22 aug | chi | ||
-| 2 | evolve doesnt work: hash-ref value not found: interaction  |31 ||x|blame: mutation, because the exception is thrown at arbitrary settings|
-| 3 | export to graphviz dot instead of matha code  | 24 ||x|with-output-to-dot|
-| 4 | reset: both current and payoff  | 23 ||x||
+| ID| To do          | Done?|Date    | by | Note |
+|:-:|-------------|:-----:|:-----:|:-----:|----|
+| 1 | redo the population    | | | chi | |
+| 2 | evolve doesnt work: hash-ref value not found: interaction |x |3108 ||blame: mutation, because the exception is thrown at arbitrary settings|
+| 3 | export to graphviz dot instead of matha code |x | 24 ||with-output-to-dot|
+| 4 | reset: both current and payoff  |x| 23 |||
 | 5 | visualise the mutation process on TV  | |||ugh later..|
-| 6 | why it doesnt show cooperative period |1 sep ||x|try to test the rd first, wo mutation: fail. blame: `scan right, but forget to reset payoff before scan|
+| 6 | why it doesnt show cooperative period |x|0109 ||try to test the rd first, wo mutation: fail. blame: `scan right, but forget to reset payoff before scan|
 | 7 | replicator dynamics test looks squiggly ugly | ||| blame: continual probability method. change to discount method, still ugly |
-| 8 | from #6, if rd test passed, why it doesnt show cooperative period? |2||x|STILL DOESNT SHOW COOPERATIVE PERIOD??? WTF. finally it shows, but with very high mutation rate|
+| 8 | from #6, if rd test passed, why it doesnt show cooperative period? |x|2||STILL DOESNT SHOW COOPERATIVE PERIOD??? WTF. finally it shows, but with very high mutation rate|
+|9||||||
+|10||||||
+|11||||||
+|12||||||
+|13||||||
 
 
