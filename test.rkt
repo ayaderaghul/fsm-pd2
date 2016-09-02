@@ -4,9 +4,10 @@
 (plot-new-window? #t)
 (provide (all-defined-out))
 (define N 1000)
-(define CYCLES 500)
+(define CYCLES 400)
 (define SPEED 100)
 (define DELTA .95)
+(define ROUNDS 100)
 
 (define (build-population d t c)
   (define p
@@ -40,7 +41,6 @@
 (define (test1 test-point file-name)
   (collect-garbage)
   (define A (apply build-population test-point))
-  (define ROUNDS 400)
   (define rd-types
     (time (evolve-rd A CYCLES SPEED ROUNDS DELTA)))
   (out-data file-name (map list (flatten rd-types)))

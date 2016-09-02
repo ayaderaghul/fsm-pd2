@@ -93,7 +93,8 @@
          (define p3 (regenerate p2 speed))
          (define p4 (mutate-population p3 mutation))
          (cons (average pp)
-               ;p3
+
+                                        ;p3
                (evolve p3 (- cycles 1) speed rounds delta mutation))]))
 
 (define (population-mean->lines data)
@@ -101,18 +102,19 @@
   (lines coors))
 
 (define (plot-mean data delta)
-(define max-pay (* 5 (compound delta ROUNDS)))
+;(define max-pay (* 5 (compound delta ROUNDS)))
+(define max-pay 5)
 (define cap (function (lambda (x) max-pay) #:color "blue"))
 (plot (list cap (population-mean->lines data)) #:out-file "trial.png"
  #:y-max (+ max-pay 5) #:y-min 0))
 
 ;; to calculate the compound rate of payoff
 (define (compound d r) (foldl (lambda (n a) (+ a (expt d n))) 1 (build-list (- r 1) add1)))
-(define ROUNDS 400)
+(define ROUNDS 100)
 (define (main)
 (collect-garbage)
 (define A (build-random-population 100))
-(define data (time (evolve A 5000 10 400 .95 1)))
+(define data (time (evolve A 5000 10 100 .95 10)))
 (plot-mean data .95))
 
 (module+ five

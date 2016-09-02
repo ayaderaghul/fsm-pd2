@@ -180,8 +180,8 @@
               (cons round-result round-results))))
   (values
    (reverse round-results)
-   (automaton (hash-set head1 'PAYOFF (round2 pay1)) body1)
-   (automaton (hash-set head2 'PAYOFF (round2 pay2)) body2)
+   (automaton (hash-set head1 'PAYOFF (round5 pay1)) body1)
+   (automaton (hash-set head2 'PAYOFF (round5 pay2)) body2)
           ))
 
 (define (interact-d au1 au2 rounds delta)
@@ -206,18 +206,18 @@
               (cons round-result round-results))))
   (values
    (reverse round-results)
-   (automaton (hash-set head1 'PAYOFF (round2 pay1)) body1)
-   (automaton (hash-set head2 'PAYOFF (round2 pay2)) body2)
+   (automaton (hash-set head1 'PAYOFF (round5 pay1)) body1)
+   (automaton (hash-set head2 'PAYOFF (round5 pay2)) body2)
           ))
 
 (define (interact* au1 au2 rounds delta)
   (with-handlers ([exn:fail?
                    (lambda (e) (values (list 'I-AM-HERE!!!) au1 au2))])
-    (interact-d au1 au2 rounds delta)))
+    (interact au1 au2 rounds delta)))
 
-(define (round2 n)
-  (/ (round (* 100 n))
-     100))
+(define (round5 n)
+  (/ (round (* 100000 n))
+     100000))
 
 ;; EXPORT TO GRAPHVIZ
 
