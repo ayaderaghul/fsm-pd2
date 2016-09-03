@@ -2,7 +2,7 @@
 
 (provide (all-defined-out))
 
-(require "pd-automata.rkt" plot)
+(require "pd-automata.rkt" "scan.rkt" "inout.rkt" plot)
 
 ;; CONFIGURATION
 (define MAX-STATES# 1) ; create an automaton having up to 15 states
@@ -88,14 +88,16 @@
   (cond
    [(zero? cycles) '()]
    [else
-         (define p2 (match-population population rounds delta))
-         (define pp (population-payoffs p2))
-         (define p3 (regenerate p2 speed))
-         (define p4 (mutate-population p3 mutation))
-         (cons (average pp)
-
+    (define rankings (scan (vector-map reset population)))
+    (out-data "r" (list (list cycles)))
+    (out-data "r" (map list (hash->list rankings)))
+    (define p2 (match-population population rounds delta))
+    (define pp (population-payoffs p2))
+    (define p3 (regenerate p2 speed))
+    (define p4 (mutate-population p3 mutation))
+    (cons (average pp)
                                         ;p3
-               (evolve p3 (- cycles 1) speed rounds delta mutation))]))
+          (evolve p3 (- cycles 1) speed rounds delta mutation))]))
 
 (define (population-mean->lines data)
   (define coors (for/list ([d (in-list data)][n (in-naturals)]) (list n d)))
@@ -103,19 +105,22 @@
 
 (define (plot-mean data delta)
 ;(define max-pay (* 5 (compound delta ROUNDS)))
-(define max-pay 3)
+  (define max-pay 3)
 ;(define cap (function (lambda (x) max-pay) #:color "blue"))
-(plot (list ;cap 
-(population-mean->lines data)) #:x-label "cycles" #:y-label "population mean" #:out-file "trial.png"
- #:y-max 5 #:y-min 0 #:width 1200 #:height 800))
+  (plot (list ;cap
+         (population-mean->lines data))
+        #:x-label "cycles" #:y-label "population mean"
+        #:out-file "trial.png"
+        #:y-max 5 #:y-min 0 #:width 1200 #:height 800))
 
 ;; to calculate the compound rate of payoff
-(define (compound d r) (foldl (lambda (n a) (+ a (expt d n))) 1 (build-list (- r 1) add1)))
+(define (compound d r)
+  (foldl (lambda (n a) (+ a (expt d n))) 1 (build-list (- r 1) add1)))
 (define ROUNDS 100)
 (define (main)
  (collect-garbage)
  (define A (build-random-population 100))
- (define data (time (evolve A 5000 10 400 .95 7)))
+ (define data (time (evolve A 100 10 400 .95 7)))
  (plot-mean data .95))
 
 (module+ five
