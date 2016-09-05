@@ -87,8 +87,9 @@
   (cond
    [(zero? cycles) '()]
    [else
-    (define rankings (scan (vector-map reset population)))
-    (export-rankings cycles rankings)
+    (define rankings (scan-flatten (vector-map reset population)))
+    (out-data "data" (list (list (number->string cycles))))
+    (export-automata rankings)
     (define p2 (match-population population rounds delta))
     (define pp (population-payoffs p2))
     (define p3 (regenerate p2 speed))

@@ -1,6 +1,6 @@
 #lang racket
-(provide load-dynamics out-data out-mean out-rank configuration-string)
-(require "csv.rkt" 2htdp/batch-io plot)
+(provide (all-defined-out))
+(require "csv.rkt" "scan.rkt" 2htdp/batch-io plot)
 
 ;; IMPORT
 (define (load-data csv-file)
@@ -46,6 +46,11 @@
    "N = ~a, speed = ~a, rounds = ~a, delta = ~a"
    N speed rounds delta))
 
+(define (export-automata rankings)
+  (for ([(key value) (in-hash rankings)])
+    (and
+     (> value 5)
+     (out-data "data" (list (list key value))))))
 
 
 

@@ -34,6 +34,8 @@
     (hash-set new-head* 'PAYOFF 0))
   (automaton new-head body))
 
+
+
 ;; CLASSIC AUTOMATA
 (define (cooperates)
   (define head (hash 'INITIAL 0 'CURRENT 0 'PAYOFF 0))
@@ -212,7 +214,7 @@
 (define (interact* au1 au2 rounds delta)
   (with-handlers ([exn:fail?
                    (lambda (e) (values (list 'I-AM-HERE!!!) au1 au2))])
-    (interact au1 au2 rounds delta)))
+    (interact-d au1 au2 rounds delta)))
 
 (define (round5 n)
   (/ (round (* 100000 n))
@@ -273,7 +275,7 @@
    "
     labelloc=\"b\"
     label = \"" name  "\"
-    }"))
+    } \n"))
 
 (define (export-dot-code au au-name)
   (with-output-to-file "au.gv"
@@ -288,8 +290,10 @@
                      )))
 
 
-(define (export-rankings cycle rankings)
+(define (export-automata-in-dot cycle rankings)
   (for ([(key value) (in-hash rankings)])
-    (export-dot-code key (string-append
-                          (number->string cycle)
-                          (number->string value)))))
+    (and
+     (> value 5)
+     (export-dot-code key (string-append
+                           (number->string cycle)
+                           (number->string value))))))

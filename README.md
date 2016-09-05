@@ -67,7 +67,12 @@ because hash->list and list->hash i have to add `flatten
 |9|the characteristic test|||||
 |10|see how to export w printf in the link vincent sent|o|||with printf, you dont have to string-append. just print, and with-output-to-file will collect them into output file. however, i print different parts with `for and plug them together. so.. task aborted.|
 |11|from #5: show on tv the ranking then print them out over cycles||||pr'bly a combination of plot/dc or draw w graphviz, #:exist 'append|
-|12|in each cycle, scan -> export dot codes together with statistics||||dont know how to produce multiple graphs in one png yet =.=|
-|13||||||
+|12|in each cycle, scan -> export dot codes together with statistics|x|5||produce multiple graphs in .ps then pdf (dot -Tps2 ... | ps2pdf ...)|
+|13|bc i have to export automata into txt then recover -> it's better (for the later reading) to flatten them first|x|5|||
+|14|export: odd line - cycle, even line - all the rankings in one line, if null leave an empty line||||easier for import|
+|15||||||
+|16||||||
+|||||||
+
 
 
