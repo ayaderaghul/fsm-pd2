@@ -1,7 +1,6 @@
 #lang racket
 
 (provide (all-defined-out))
-
 (require "pd-automata.rkt" "scan.rkt" "inout.rkt" plot)
 
 ;; CONFIGURATION
@@ -89,8 +88,7 @@
    [(zero? cycles) '()]
    [else
     (define rankings (scan (vector-map reset population)))
-    (out-data "r" (list (list cycles)))
-    (out-data "r" (map list (hash->list rankings)))
+    (export-rankings cycles rankings)
     (define p2 (match-population population rounds delta))
     (define pp (population-payoffs p2))
     (define p3 (regenerate p2 speed))

@@ -65,9 +65,9 @@ because hash->list and list->hash i have to add `flatten
 | 7 | replicator dynamics test looks squiggly ugly | ||| blame: continual probability method. change to discount method, still ugly |
 | 8 | from #6, if rd test passed, why it doesnt show cooperative period? |x|2||STILL DOESNT SHOW COOPERATIVE PERIOD??? WTF. finally it shows, but with very high mutation rate|
 |9|the characteristic test|||||
-|10|see how to export w printf in the link vincent sent||||with printf, you dont have to string-append. just print, and with-output-to-file will collect them into output file|
+|10|see how to export w printf in the link vincent sent|o|||with printf, you dont have to string-append. just print, and with-output-to-file will collect them into output file. however, i print different parts with `for and plug them together. so.. task aborted.|
 |11|from #5: show on tv the ranking then print them out over cycles||||pr'bly a combination of plot/dc or draw w graphviz, #:exist 'append|
-|12||||||
+|12|in each cycle, scan -> export dot codes together with statistics||||dont know how to produce multiple graphs in one png yet =.=|
 |13||||||
 
 

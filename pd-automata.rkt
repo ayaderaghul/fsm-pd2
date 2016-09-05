@@ -286,3 +286,10 @@
                      (string-append (symbol->string name)
                                     (number->string i))
                      )))
+
+
+(define (export-rankings cycle rankings)
+  (for ([(key value) (in-hash rankings)])
+    (export-dot-code key (string-append
+                          (number->string cycle)
+                          (number->string value)))))
