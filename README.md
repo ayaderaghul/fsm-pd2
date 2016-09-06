@@ -69,8 +69,8 @@ because hash->list and list->hash i have to add `flatten
 |11|from #5: show on tv the ranking then print them out over cycles||||pr'bly a combination of plot/dc or draw w graphviz, #:exist 'append|
 |12|in each cycle, scan -> export dot codes together with statistics|x|5||produce multiple graphs in .ps then pdf (dot -Tps2 ... | ps2pdf ...)|
 |13|bc i have to export automata into txt then recover -> it's better (for the later reading) to flatten them first|x|5|||
-|14|export: odd line - cycle, even line - all the rankings in one line, if null leave an empty line||||easier for import|
-|15||||||
+|14|export: odd line - cycle, even line - all the rankings in one line, if null leave an empty line|x|6||easier for import|
+|15|now import & recover automata|||||
 |16||||||
 |||||||
 

@@ -1,7 +1,7 @@
 #lang racket
 (provide (all-defined-out))
 (require "csv.rkt" "scan.rkt" 2htdp/batch-io plot)
-
+(require (planet neil/csv:2:0))
 ;; IMPORT
 (define (load-data csv-file)
   [define strings (read-csv-file csv-file)]
@@ -47,12 +47,51 @@
    N speed rounds delta))
 
 (define (export-automata rankings)
-  (for ([(key value) (in-hash rankings)])
-    (and
-     (> value 5)
-     (out-data "data" (list (list key value))))))
+  (define to-export
+    (remove* (list #f)
+             (for/list ([(key value) (in-hash rankings)])
+               (and
+                (> value 5)
+                (list key value)))))
+  (if (false? (first to-export))
+      (out-data "data" (list (list "")))
+      (out-data "data" (list (apply append to-export)))))
 
 
+;; IMPORT AUTOMATA
 
+(define make-automaton-csv-reader
+  (make-csv-reader-maker
+   '((separator-chars #\,)
+     (strip-leading-whitespace? . #t)
+     (strip-trailing-whitespace? . #t))))
 
+(define (all-rows file make-reader)
+  (define next-row
+    (make-reader (open-input-file file)))
+  (define (loop)
+    (define row (next-row))
+    (if (empty? row) '()
+        (cons row (loop))))
+  (loop))
 
+(define (at-row n file make-reader)
+  (define next-row (make-reader (open-input-file file)))
+  (define (at x)
+    (define row (next-row))
+    (if (zero? x) row (at (- x 1))))
+  (at n))
+
+(define (take-odd lst)
+  (define l (length lst))
+  (filter-not false?
+              (for/list ([i (in-range l)]
+                         [j (in-list lst)])
+                (and (odd? i) j))))
+
+(define (take-even lst)
+  (define l (length lst))
+  (filter-not false?
+              (for/list ([i (in-range l)]
+                         [j (in-list lst)])
+                (and (even? i) j))))
