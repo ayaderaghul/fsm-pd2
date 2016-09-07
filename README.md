@@ -11,6 +11,7 @@ some notable features are:
 * immutable mutation
 * in interaction, delta is the continual probability
 * redo the population (previous: double vectored population)
+* mutation: add and delete states
 
 ## abstract
 population of finite state machines playing the repeated prisoner's dilemma.
@@ -52,6 +53,16 @@ then i discover that it is the `detach state that adds the extra pair
 
 because hash->list and list->hash i have to add `flatten
 
+1. 7 sep: work flow to develop the benchmark automata in the personality test
+
+ressurect at
+
+then find a way to test their personality
+
+then collect the useful benchmarks into a table
+
+that would be materials for selecting an official benchmark list
+
 ## to-very-dos
 
 | ID| To do          | Done?|Date    | by | Note |
@@ -70,8 +81,8 @@ because hash->list and list->hash i have to add `flatten
 |12|in each cycle, scan -> export dot codes together with statistics|x|5||produce multiple graphs in .ps then pdf (dot -Tps2 ... | ps2pdf ...)|
 |13|bc i have to export automata into txt then recover -> it's better (for the later reading) to flatten them first|x|5|||
 |14|export: odd line - cycle, even line - all the rankings in one line, if null leave an empty line|x|6||easier for import|
-|15|now import & recover automata|||||
-|16||||||
+|15|now import & recover automata|x|7|||
+|16|ressurect-at|||||
 |||||||
 
 

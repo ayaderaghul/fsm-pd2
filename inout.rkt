@@ -91,7 +91,16 @@
 
 (define (take-even lst)
   (define l (length lst))
-  (filter-not false?
+  (filter-not void?
               (for/list ([i (in-range l)]
                          [j (in-list lst)])
-                (and (even? i) j))))
+                (if (even? i) j (void)))))
+
+
+(define (convert x)
+  (cond [(< (string-length x) 4) (string->number x)]
+        [else
+         (define code (string-trim (string-trim x "(") ")"))
+         (define pieces (string-split code " "))
+         (define au (map string->number pieces))
+         (recover-automaton au)]))

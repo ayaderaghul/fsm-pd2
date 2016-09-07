@@ -25,6 +25,30 @@
         (for/list ([(key value) (in-hash dispatch)])
           value)))))))
 
+(define STATE-LENGTH (+ 2 ACTIONS#))
+
+(define (recover-automaton au)
+  (match-define (list* init body) au)
+  (define head (hash 'INITIAL init 'PAYOFF 0 'CURRENT init))
+  (define s (/ (length body) STATE-LENGTH))
+  (define (recover-body s a-body)
+    (cond [(empty? a-body) '()]
+          [else
+           (define-values (first-state the-rest)
+             (split-at a-body STATE-LENGTH))
+           (match-define (list state-id label d? c?)
+                         first-state)
+           (append (list
+                    state-id
+                    (state
+                     (if (zero? label) 'C 'D)
+                     (hash 'D d? 'C c?)))
+                   (recover-body s the-rest))]))
+  (automaton head (apply hash (recover-body s body))))
+
+
+
+
 
 (define (scan-flatten population)
   (define p (vector->list population))
