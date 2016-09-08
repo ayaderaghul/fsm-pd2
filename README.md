@@ -12,6 +12,7 @@ some notable features are:
 * in interaction, delta is the continual probability
 * redo the population (previous: double vectored population)
 * mutation: add and delete states
+* try to minimize matha in the work flow (export automata code, solve games w matrix form, plot replicator dynamics etc)
 
 ## abstract
 population of finite state machines playing the repeated prisoner's dilemma.
@@ -84,6 +85,9 @@ that would be materials for selecting an official benchmark list
 |15|now import & recover automata|x|7|||
 |16|ressurect-at|x|8|||
 ||test personality at cycle 2000, sample|||||
+||get matha out of the loop|||||
+||revise code, in light of these new discoveries haha: list-update, list-set, [j (in-naturals), [e l] ~ [e (in-list l)]]|||||
+||write br function, solve NE|||| =.=~~~|
 
 
 

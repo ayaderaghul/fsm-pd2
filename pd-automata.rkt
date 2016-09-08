@@ -59,6 +59,11 @@
                      1 (state 'D (hash 'C 1 'D 1))))
   (automaton head body))
 
+(define d (defects))
+(define c (cooperates))
+(define t (tit-for-tat))
+(define g (grim-trigger))
+
 ;;IMMUTABLE MUTATION
 (define (mutate-marginally a)
   (match-define (automaton head body) a)
@@ -216,9 +221,49 @@
                    (lambda (e) (values (list 'I-AM-HERE!!!) au1 au2))])
     (interact-d au1 au2 rounds delta)))
 
+(define (interact-s s1 s2 rounds delta)
+  (define-values (result a1 a2) (interact-d s1 s2 rounds delta))
+  (round2 (hash-ref (automaton-head a1) 'PAYOFF)))
+
+
+
 (define (round5 n)
   (/ (round (* 100000 n))
      100000))
+(define (round2 n)
+  (/ (round (* 100 n))
+     100))
+
+;; contest
+
+(define (contest* s lst)
+  (for/list ([op lst])
+    (interact-s s op 10 .9)))
+
+(define (contest ss lst)
+  (for/list ([au ss])
+    (contest* au lst)))
+
+(define (transpose payoff)
+  (apply map list payoff))
+
+;; solve matrix form game
+
+(define (index-of v x)
+  (for/list ([y v] [i (in-naturals)])
+    (if (equal? x y) 'x '_)))
+
+
+(define (br possible-payoffs)
+  (define max-possible (apply max possible-payoffs))
+  (index-of possible-payoffs max-possible))
+
+(define (br-row lst)
+  (br last lst))
+(define (br-col lst)
+  (br first lst))
+
+
 
 ;; EXPORT TO GRAPHVIZ
 
