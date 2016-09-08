@@ -103,14 +103,16 @@
   (lines coors))
 
 (define (plot-mean data delta)
-;(define max-pay (* 5 (compound delta ROUNDS)))
-  (define max-pay 3)
-;(define cap (function (lambda (x) max-pay) #:color "blue"))
-  (plot (list ;cap
+(define reward (* 3 (compound delta ROUNDS)))
+(define punishment (* 1 (compound delta ROUNDS)))
+  ;(define max-pay 3)
+(define reward-line (function (lambda (x) reward) #:color "blue"))
+(define punishment-line (function (lambda (x) punishment) #:color "red"))
+  (plot (list reward-line punishment-line
          (population-mean->lines data))
         #:x-label "cycles" #:y-label "population mean"
         #:out-file "trial.png"
-        #:y-max 5 #:y-min 0 #:width 1200 #:height 800))
+        #:y-max (+ reward 5) #:y-min 0 #:width 1200 #:height 800))
 
 ;; to calculate the compound rate of payoff
 (define (compound d r)
@@ -119,7 +121,7 @@
 (define (main)
  (collect-garbage)
  (define A (build-random-population 100))
- (define data (time (evolve A 100 10 400 .95 7)))
+ (define data (time (evolve A 3000 10 400 .95 10)))
  (plot-mean data .95))
 
 (module+ five

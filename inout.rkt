@@ -96,7 +96,6 @@
                          [j (in-list lst)])
                 (if (even? i) j (void)))))
 
-
 (define (convert x)
   (cond [(< (string-length x) 4) (string->number x)]
         [else
@@ -104,3 +103,23 @@
          (define pieces (string-split code " "))
          (define au (map string->number pieces))
          (recover-automaton au)]))
+
+(define (resurrect-at cycle pre file make-reader)
+  (define posn (+ 1 (* cycle 2)))
+  (define data (at-row posn file make-reader))
+  (resurrect pre data))
+
+(define (resurrect pre lst)
+  (define table (map convert lst))
+  (define resurrected (take-even table))
+  (define l (length resurrected))
+  (define names (generate-ax pre (build-list l values)))
+  (for ([i (in-list names)]
+        [j (in-list resurrected)])
+    (eval (list 'define i j)))
+  resurrected)
+
+(define (x->ax pre x)
+  (string->symbol (string-append pre (number->string x))))
+(define (generate-ax pre a-list)
+  (map (lambda (x) (x->ax pre x)) a-list))

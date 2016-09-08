@@ -82,8 +82,8 @@ that would be materials for selecting an official benchmark list
 |13|bc i have to export automata into txt then recover -> it's better (for the later reading) to flatten them first|x|5|||
 |14|export: odd line - cycle, even line - all the rankings in one line, if null leave an empty line|x|6||easier for import|
 |15|now import & recover automata|x|7|||
-|16|ressurect-at|||||
-|||||||
+|16|ressurect-at|x|8|||
+||test personality at cycle 2000, sample|||||
 
 
 
