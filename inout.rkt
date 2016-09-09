@@ -37,16 +37,12 @@
 (define (out-mean filename data)
   (out-data filename (map list data)))
 
-(define (out-rank filename day data)
-  (out-data filename (append (list (list day)
-                                 (map list data)))))
-
 (define (configuration-string N speed rounds delta)
   (format
    "N = ~a, speed = ~a, rounds = ~a, delta = ~a"
    N speed rounds delta))
 
-(define (export-automata rankings)
+(define (export-automata rankings rank-file)
   (define to-export
     (remove* (list #f)
              (for/list ([(key value) (in-hash rankings)])
@@ -54,9 +50,13 @@
                 (> value 5)
                 (list key value)))))
   (if (false? (first to-export))
-      (out-data "data" (list (list "")))
-      (out-data "data" (list (apply append to-export)))))
+      (out-data rank-file (list (list "")))
+      (out-data rank-file (list (apply append to-export)))))
 
+(define (out-rank day rankings rank-file)
+(out-data rank-file (list (list (number->string day))))
+(export-automata rankings rank-file))
+  
 
 ;; IMPORT AUTOMATA
 

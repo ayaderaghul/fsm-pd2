@@ -89,6 +89,9 @@ that would be materials for selecting an official benchmark list
 ||revise code, in light of these new discoveries haha: list-update, list-set, [j (in-naturals), [e l] ~ [e (in-list l)]]|||||
 ||write br function, solve NE|x|9|| |
 ||run semi extensive simulations to get patterns, in order to develop benchmark set for the personality test|||| |
+||export graphviz to pdf: big automata -> dont fit into A4 page of pdf, but postscript file is ok|||| |
+||generate file names reflecting different deltas|||| |
+||run across deltas|x|9|| |
 |||||| |
 |||||| |
 |||||| |
