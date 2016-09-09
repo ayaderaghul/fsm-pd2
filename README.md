@@ -87,7 +87,16 @@ that would be materials for selecting an official benchmark list
 ||test personality at cycle 2000, sample|||||
 ||get matha out of the loop|||||
 ||revise code, in light of these new discoveries haha: list-update, list-set, [j (in-naturals), [e l] ~ [e (in-list l)]]|||||
-||write br function, solve NE|||| =.=~~~|
+||write br function, solve NE|x|9|| |
+||run semi extensive simulations to get patterns, in order to develop benchmark set for the personality test|||| |
+|||||| |
+|||||| |
+|||||| |
+|||||| |
+|||||| |
+|||||| |
+
+
 
 
 

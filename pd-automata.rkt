@@ -53,6 +53,14 @@
                      1 (state 'D (hash 'C 0 'D 1))))
   (automaton head body))
 
+(define (cautious-tit-for-tat)
+  (define head (hash 'INITIAL 1 'CURRENT 1 'PAYOFF 0))
+  (define body (hash 0 (state 'C (hash 'C 0 'D 1))
+                     1 (state 'D (hash 'C 0 'D 1))))
+  (automaton head body))
+
+
+
 (define (grim-trigger)
   (define head (hash 'INITIAL 0 'CURRENT 0 'PAYOFF 0))
   (define body (hash 0 (state 'C (hash 'C 0 'D 1))
@@ -63,6 +71,7 @@
 (define c (cooperates))
 (define t (tit-for-tat))
 (define g (grim-trigger))
+(define ct (cautious-tit-for-tat))
 
 ;;IMMUTABLE MUTATION
 (define (mutate-marginally a)
@@ -225,6 +234,11 @@
   (define-values (result a1 a2) (interact-d s1 s2 rounds delta))
   (round2 (hash-ref (automaton-head a1) 'PAYOFF)))
 
+(define (interact-2 s1 s2 rounds delta)
+  (define-values (result a1 a2) (interact-d s1 s2 rounds delta))
+  (cons
+   (round2 (hash-ref (automaton-head a1) 'PAYOFF))
+   (round2 (hash-ref (automaton-head a2) 'PAYOFF))))
 
 
 (define (round5 n)
@@ -236,33 +250,47 @@
 
 ;; contest
 
-(define (contest* s lst)
+(define (match-with* s lst)
   (for/list ([op lst])
     (interact-s s op 10 .9)))
 
-(define (contest ss lst)
+(define (match-with ss lst)
   (for/list ([au ss])
-    (contest* au lst)))
+    (match-with* au lst)))
+
+(define (match-symmetric lst)
+  (match-with lst lst))
+
+(define (return-full lst)
+  (for/list ([i lst])
+    (for/list ([j lst])
+      (interact-2 i j 10 .9))))
 
 (define (transpose payoff)
   (apply map list payoff))
 
 ;; solve matrix form game
 
-(define (index-of v x)
+(define (findx v x)
   (for/list ([y v] [i (in-naturals)])
     (if (equal? x y) 'x '_)))
 
-
-(define (br possible-payoffs)
+(define (br* possible-payoffs)
   (define max-possible (apply max possible-payoffs))
-  (index-of possible-payoffs max-possible))
+  (findx possible-payoffs max-possible))
 
-(define (br-row lst)
-  (br last lst))
-(define (br-col lst)
-  (br first lst))
+(define (br payoff-table)
+  (map br* (transpose payoff-table)))
 
+(define (weave-br pay1 pay2)
+  (define pay2t (transpose pay2))
+  (map (lambda (l1 l2) (map list l1 l2))
+       pay1 pay2t))
+
+(define (solve-symmetric-game lst)
+  (define p1 (match-symmetric lst))
+  (define br1 (br p1))
+  (weave-br br1 br1))
 
 
 ;; EXPORT TO GRAPHVIZ
