@@ -2,7 +2,11 @@
 
 (require "pd-population.rkt" "pd-inout.rkt")
 (provide (all-defined-out))
-(define DELTAS (list 0 .2 .5 .8 .9 .95 .99))
+(define DELTAS (list 0 
+.2 .5 .8 
+.9 .95 
+.99
+))
 
 (define (deltas)
   (for ([i DELTAS])

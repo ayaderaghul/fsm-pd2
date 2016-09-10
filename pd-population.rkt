@@ -5,7 +5,7 @@
 
 ;; CONFIGURATION
 (define N 100)
-(define CYCLES 100)
+(define CYCLES 5000)
 (define SPEED 10)
 (define ROUNDS 400)
 (define DELTA .95)
@@ -104,9 +104,10 @@
   (lines coors))
 
 (define (plot-mean data delta rounds pic-file pic-name)
-  (define reward (* 3 (compound delta rounds)))
-  (define punishment (* 1 (compound delta rounds)))
-                                        ;(define max-pay 3)
+  ;(define reward (* 3 (compound delta rounds)))
+  ;(define punishment (* 1 (compound delta rounds)))
+  (define reward 3)
+(define punishment 1)
   (define reward-line (function (lambda (x) reward) #:color "blue"))
   (define punishment-line (function (lambda (x) punishment) #:color "red"))
   (plot (list reward-line punishment-line

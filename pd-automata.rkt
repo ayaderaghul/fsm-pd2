@@ -228,7 +228,7 @@
 (define (interact* au1 au2 rounds delta)
   (with-handlers ([exn:fail?
                    (lambda (e) (values (list 'I-AM-HERE!!!) au1 au2))])
-    (interact-d au1 au2 rounds delta)))
+    (interact au1 au2 rounds delta)))
 
 (define (interact-s s1 s2 rounds delta)
   (define-values (result a1 a2) (interact-d s1 s2 rounds delta))
@@ -285,12 +285,16 @@
 (define (weave-br pay1 pay2)
   (define pay2t (transpose pay2))
   (map (lambda (l1 l2) (map list l1 l2))
-       pay1 pay2t))
+       pay2t pay1))
 
 (define (solve-symmetric-game lst)
   (define p1 (match-symmetric lst))
   (define br1 (br p1))
   (weave-br br1 br1))
+
+;; personality test
+
+
 
 
 ;; EXPORT TO GRAPHVIZ

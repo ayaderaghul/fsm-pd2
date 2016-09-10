@@ -92,7 +92,7 @@ that would be materials for selecting an official benchmark list
 ||export graphviz to pdf: big automata -> dont fit into A4 page of pdf, but postscript file is ok|||| |
 ||generate file names reflecting different deltas|||| |
 ||run across deltas|x|9|| |
-|||||| |
+||you dont have time for developing the personality test. just see what happens in the special periods|||| :((( |
 |||||| |
 |||||| |
 |||||| |
