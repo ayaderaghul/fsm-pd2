@@ -1,6 +1,6 @@
 #lang racket
 (provide (all-defined-out))
-(require "csv.rkt" "scan.rkt" 2htdp/batch-io plot)
+(require "csv.rkt" "pd-scan.rkt" 2htdp/batch-io plot)
 (require (planet neil/csv:2:0))
 ;; IMPORT
 (define (load-data csv-file)

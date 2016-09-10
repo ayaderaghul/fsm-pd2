@@ -1,6 +1,6 @@
 #lang racket
 
-(require "pd-automata.rkt" "pd-population.rkt" "scan.rkt" "inout.rkt" plot)
+(require "pd-automata.rkt" "pd-population.rkt" "pd-scan.rkt" "pd-inout.rkt" plot)
 (plot-new-window? #t)
 (provide (all-defined-out))
 (define N 1000)

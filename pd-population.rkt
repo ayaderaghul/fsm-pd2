@@ -1,7 +1,7 @@
 #lang racket
 
 (provide (all-defined-out))
-(require "pd-automata.rkt" "scan.rkt" "inout.rkt" plot)
+(require "pd-automata.rkt" "pd-scan.rkt" "pd-inout.rkt" plot)
 
 ;; CONFIGURATION
 (define N 100)
