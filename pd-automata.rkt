@@ -303,7 +303,9 @@
   (define destinations (hash-values dispatch))
   (if (apply equal? destinations)
       (list "\"C,D\"" "\"C,D\"")
-      (list "\"C\"" "\"D\"")))
+      (list "\"D\"" "\"C\"")))
+
+;; in dispatch, D is before C
 
 (define (generate-dispatch-code state# dispatch)
   (define l (hash-count dispatch))
@@ -319,10 +321,11 @@
       " ] \n"))))
 
 (define (generate-dispatch-codes body)
+(define state-ids (hash-keys body))
   (define dispatches (map state-dispatch (hash-values body)))
   (define dispatch-code
-    (for/list ([i (length dispatches)])
-      (generate-dispatch-code i (list-ref dispatches i))))
+    (for/list ([i state-ids] [j dispatches])
+      (generate-dispatch-code i j)))
   (apply string-append (flatten dispatch-code)))
 
 (define (generate-state-code body)
