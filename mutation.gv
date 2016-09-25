@@ -1,0 +1,121 @@
+digraph finite_state_machine {
+            rankdir=LR
+            size="8,5"
+            node [shape = doublecircle]; 0
+            node [shape = circle] 
+ 
+0 [label = "D"] 
+
+0 -> 0 [ label = "C,D" ] 
+
+    labelloc="b"
+    label = "a0"
+    } 
+digraph finite_state_machine {
+            rankdir=LR
+            size="8,5"
+            node [shape = doublecircle]; 0
+            node [shape = circle] 
+ 
+0 [label = "C"] 
+
+0 -> 0 [ label = "C,D" ] 
+
+    labelloc="b"
+    label = "a1"
+    } 
+digraph finite_state_machine {
+            rankdir=LR
+            size="8,5"
+            node [shape = doublecircle]; 0
+            node [shape = circle] 
+ 
+0 [label = "C"] 
+1 [label = "D"] 
+
+1 -> 1 [ label = "D" ] 
+1 -> 0 [ label = "C" ] 
+0 -> 1 [ label = "D" ] 
+0 -> 0 [ label = "C" ] 
+
+    labelloc="b"
+    label = "a2"
+    } 
+digraph finite_state_machine {
+            rankdir=LR
+            size="8,5"
+            node [shape = doublecircle]; 0
+            node [shape = circle] 
+ 
+0 [label = "C"] 
+1 [label = "D"] 
+2 [label = "C"] 
+
+1 -> 2 [ label = "D" ] 
+1 -> 0 [ label = "C" ] 
+2 -> 1 [ label = "D" ] 
+2 -> 2 [ label = "C" ] 
+0 -> 1 [ label = "D" ] 
+0 -> 0 [ label = "C" ] 
+
+    labelloc="b"
+    label = "a3"
+    } 
+digraph finite_state_machine {
+            rankdir=LR
+            size="8,5"
+            node [shape = doublecircle]; 0
+            node [shape = circle] 
+ 
+0 [label = "C"] 
+1 [label = "D"] 
+2 [label = "C"] 
+
+1 -> 2 [ label = "D" ] 
+1 -> 0 [ label = "C" ] 
+2 -> 0 [ label = "D" ] 
+2 -> 2 [ label = "C" ] 
+0 -> 0 [ label = "C,D" ] 
+
+    labelloc="b"
+    label = "a4"
+    } 
+digraph finite_state_machine {
+            rankdir=LR
+            size="8,5"
+            node [shape = doublecircle]; 1
+            node [shape = circle] 
+ 
+0 [label = "C"] 
+1 [label = "D"] 
+2 [label = "C"] 
+
+1 -> 2 [ label = "D" ] 
+1 -> 0 [ label = "C" ] 
+2 -> 0 [ label = "D" ] 
+2 -> 2 [ label = "C" ] 
+0 -> 0 [ label = "C,D" ] 
+
+    labelloc="b"
+    label = "a5"
+    } 
+digraph finite_state_machine {
+            rankdir=LR
+            size="8,5"
+            node [shape = doublecircle]; 1
+            node [shape = circle] 
+ 
+0 [label = "C"] 
+1 [label = "D"] 
+2 [label = "C"] 
+
+1 -> 2 [ label = "D" ] 
+1 -> 0 [ label = "C" ] 
+2 -> 0 [ label = "D" ] 
+2 -> 2 [ label = "C" ] 
+0 -> 0 [ label = "D" ] 
+0 -> 1 [ label = "C" ] 
+
+    labelloc="b"
+    label = "a6"
+    } 

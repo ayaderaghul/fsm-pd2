@@ -93,7 +93,7 @@ that would be materials for selecting an official benchmark list
 ||generate file names reflecting different deltas|||| |
 ||run across deltas|x|9|| |
 ||you dont have time for developing the personality test. just see what happens in the special periods|||| :((( |
-|||||| |
+||generate more data to see the patterns as delta runs along the spectrum (middle high deltas: more interesting, delta close to 1: mostly tit for tat)|||| |
 |||||| |
 |||||| |
 |||||| |
