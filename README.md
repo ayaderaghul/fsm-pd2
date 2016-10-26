@@ -1,4 +1,5 @@
 # fsm-pd2
+as of oct 26, 2016: i have posted updates on the mailing list, long ago
 as of sep 19, 2016: post racketcon '16: i'd try to wrap this up better then post on mailing list
 
 # how to run (tentative)
